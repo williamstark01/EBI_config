@@ -1,0 +1,85 @@
+# vim: set filetype=sh :
+
+# William Stark (william@ebi.ac.uk)
+
+
+# (try to) fix EBI cluster / brew / tmux issue:
+# """
+# Package bash-completion was not found in the pkg-config search path.
+# Perhaps you should add the directory containing `bash-completion.pc'
+# to the PKG_CONFIG_PATH environment variable
+# No package 'bash-completion' found
+# -bash: /yum: No such file or directory
+# """
+# https://github.com/Linuxbrew/legacy-linuxbrew/issues/46
+export PKG_CONFIG_PATH="/usr/share/pkgconfig/"
+
+
+# fix git plus pyenv issue
+# https://github.com/pyenv/pyenv/issues/688
+export GIT_INTERNAL_GETTEXT_TEST_FALLBACKS=1
+
+
+export HPS_ROOT="/hps/nobackup2/production/ensembl/$USER"
+export NFS_ROOT="/nfs/production/panda/ensembl/$USER"
+
+alias hps="cd $HPS_ROOT"
+alias nfs="cd $NFS_ROOT"
+
+
+export ENSCODE="${NFS_ROOT}/enscode"
+
+
+### Python
+# don't write bytecode on disk
+export PYTHONDONTWRITEBYTECODE=1
+
+
+if [[ -d $HOME/dotfiles/ebi/bin ]]; then
+    export PATH="$HOME/dotfiles/ebi/bin:$PATH"
+fi
+
+
+# genebuild.sh
+# https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
+################################################################################
+# load my version of the genebuild.sh configuration script
+#source "$HOME/dotfiles/ebi/genebuild.sh"
+
+#export ENSEMBL_SOFTWARE_HOME=/nfs/software/ensembl/RHEL7-JUL2017-core2
+ENSEMBL_SOFTWARE_HOME=/nfs/software/ensembl/RHEL7-JUL2017-core2
+
+# Homebrew (Linuxbrew)
+# https://www.ebi.ac.uk/seqdb/confluence/display/ENS/Linuxbrew
+#if [[ -f "${ENSEMBL_SOFTWARE_HOME}/envs/linuxbrew.sh" ]]; then
+#    source "${ENSEMBL_SOFTWARE_HOME}/envs/linuxbrew.sh"
+#fi
+#if [[ -f "$HOME/dotfiles/ebi/linuxbrew.sh" ]]; then
+#    source "$HOME/dotfiles/ebi/linuxbrew.sh"
+#fi
+
+# MySQL commands
+# https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
+if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
+    export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
+fi
+
+export HIVE_EMAIL="${USER}@ebi.ac.uk"
+export GENEBUILDER_ID=50
+
+#ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
+ENSEMBL_RELEASE="104"
+################################################################################
+
+LINUXBREW_BIN="${ENSEMBL_SOFTWARE_HOME}/linuxbrew/bin"
+alias git="${LINUXBREW_BIN}/git"
+
+
+### plenv
+#if [[ -f "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh" ]]; then
+#    source "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh"
+#fi
+PLENV_ROOT="/nfs/software/ensembl/RHEL7-JUL2017-core2/plenv"
+
+### pyenv
+PYENV_ROOT="${NFS_ROOT}/.pyenv"

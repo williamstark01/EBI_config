@@ -1,0 +1,38 @@
+# vim: set filetype=sh :
+
+
+### Perl
+alias perltidy="perltidy -b -bext='/' -i=2"
+
+
+# Ensembl
+################################################################################
+ENSEMBL_API_ROOT="$ENSCODE/ensembl_api"
+export PATH="$ENSEMBL_API_ROOT/ensembl-git-tools/bin:$PATH"
+
+PERL5LIB="$ENSEMBL_API_ROOT/bioperl-live"
+PERL5LIB="$PERL5LIB:$ENSEMBL_API_ROOT/ensembl/modules"
+PERL5LIB="$PERL5LIB:$ENSEMBL_API_ROOT/ensembl-compara/modules"
+PERL5LIB="$PERL5LIB:$ENSEMBL_API_ROOT/ensembl-variation/modules"
+PERL5LIB="$PERL5LIB:$ENSEMBL_API_ROOT/ensembl-funcgen/modules"
+PERL5LIB="$PERL5LIB:$ENSEMBL_API_ROOT/Bio-DB-HTS/lib:$ENSEMBL_API_ROOT/Bio-DB-HTS/blib/arch/auto/Bio/DB/HTS:$ENSEMBL_API_ROOT/Bio-DB-HTS/blib/arch/auto/Bio/DB/HTS/Faidx"
+export PERL5LIB
+
+export HTSLIB_DIR="$ENSEMBL_API_ROOT/htslib"
+################################################################################
+
+
+# Genebuild
+################################################################################
+PERL5LIB="$PERL5LIB:$ENSCODE/ensembl-analysis/modules"
+export PERL5LIB
+################################################################################
+
+
+# eHive
+################################################################################
+PERL5LIB="$PERL5LIB:$ENSCODE/ensembl-hive/modules"
+export PERL5LIB
+
+export PATH="$ENSCODE/ensembl-hive/scripts:$PATH"
+################################################################################

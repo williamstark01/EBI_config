@@ -1,0 +1,27 @@
+#!/bin/bash
+
+
+search_term=$1
+
+
+# Ensembl database servers
+# https://www.ebi.ac.uk/seqdb/confluence/display/ENS/Ensembl+Database+Servers
+mysql_servers=(
+    mysql-ens-genebuild-prod-1
+    mysql-ens-genebuild-prod-2
+    mysql-ens-genebuild-prod-3
+    mysql-ens-genebuild-prod-4
+    mysql-ens-genebuild-prod-5
+    mysql-ens-genebuild-prod-6
+    mysql-ens-genebuild-prod-7
+    mysql-ens-vertannot-staging
+    mysql-ens-microbes-prod-1
+    mysql-ens-sta-1
+    mysql-ens-sta-2
+)
+
+for mysql_server in "${mysql_servers[@]}"; do
+    echo "$mysql_server"
+    "$mysql_server" -e "SHOW DATABASES LIKE '%${search_term}%'"
+    echo
+done
