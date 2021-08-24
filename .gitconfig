@@ -2,10 +2,6 @@
 ; vim: set filetype=gitconfig :
 
 
-; https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
-; man git config
-
-
 [user]
     ; full name
     name = William Stark

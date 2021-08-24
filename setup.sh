@@ -210,12 +210,12 @@ main() {
     mkdir --parents --verbose "$SOFTWARE_ROOT"
 
 
+    # dotfiles setup
+    # https://github.com/williamstark01/dotfiles
+    ############################################################################
     backup_datetime dotfiles
-    backup_datetime EBI_config
 
     git clone https://github.com/williamstark01/dotfiles.git
-    git clone https://github.com/williamstark01/EBI_config.git
-
 
     DOTFILES=(
         .bash_profile
@@ -231,18 +231,17 @@ main() {
 
     backup_datetime .bashrc_local
     cp --interactive --verbose $HOME/dotfiles/.bashrc_local $HOME/
+    ############################################################################
 
-    # Konsole Tomorrow theme
-    # https://github.com/dram/konsole-tomorrow-theme
-    if [[ -d "$HOME/.local/share/konsole/" ]]; then
-        ln --symbolic --force --verbose $HOME/dotfiles/.local/share/konsole/Tomorrow.colorscheme $HOME/.local/share/konsole/
-    fi
 
+    # EBI_config setup
+    # https://github.com/williamstark01/EBI_config
+    ############################################################################
+    backup_datetime EBI_config
+    git clone https://github.com/williamstark01/EBI_config.git
 
     ln --symbolic --force --verbose $HOME/EBI_config/.bashrc_codon $HOME/
-
-    backup_datetime .gitconfig
-    cp --interactive --verbose $HOME/EBI_config/.gitconfig $HOME/
+    ############################################################################
 
 
     STANDARD_PACKAGES=(

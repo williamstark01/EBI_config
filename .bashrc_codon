@@ -32,17 +32,13 @@ fi
 # genebuild.sh
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
 ################################################################################
-# load my version of the genebuild.sh configuration script
-#source "$HOME/dotfiles/ebi/genebuild.sh"
-
-ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
-export ENSEMBL_SOFTWARE_HOME
+export ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
 
 # MySQL commands
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
-if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
-    export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
-fi
+#if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
+#    export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
+#fi
 
 export HIVE_EMAIL="${USER}@ebi.ac.uk"
 export GENEBUILDER_ID=50
