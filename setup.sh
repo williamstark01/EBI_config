@@ -179,30 +179,6 @@ setup_nodejs() {
 }
 
 
-install_programs() {
-    STANDARD_PACKAGES=(
-        git
-        python-argcomplete
-        ripgrep
-        tmux
-    )
-
-    # TODO
-    # install programs used on the cluster
-    #sudo apt install -y $STANDARD_PACKAGES
-
-    # TODO
-    # setup Rust
-
-    # TODO
-    # install with Cargo
-    RUST_PACKAGES=(
-        delta
-        fd
-    )
-}
-
-
 main() {
     # verify running on the Codon cluster
     if [[ $LSF_ENVDIR != "/ebi/lsf/codon/conf" ]]; then
@@ -265,7 +241,14 @@ main() {
 
     install_z
 
-    #install_programs
+    # TODO
+    # install programs
+    STANDARD_PACKAGES=(
+        git
+        python-argcomplete
+        ripgrep
+        tmux
+    )
 
     YES_NO_ANSWER=$(yes_no_question "Install Python development environment?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
@@ -276,6 +259,13 @@ main() {
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_neovim
     fi
+
+    # TODO
+    # setup Rust and install with Cargo
+    RUST_PACKAGES=(
+        delta
+        fd
+    )
 
     YES_NO_ANSWER=$(yes_no_question "Install Node.js?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
