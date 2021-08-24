@@ -33,7 +33,7 @@ export HPS_ROOT="/hps/nobackup2/production/ensembl/$USER"
 alias nfs="cd $NFS_ROOT"
 alias hps="cd $HPS_ROOT"
 
-export ENSCODE="${NFS_ROOT}/enscode"
+export ENSCODE="$NFS_ROOT/enscode"
 
 
 if [[ -d $HOME/EBI_config/bin ]]; then
@@ -41,46 +41,49 @@ if [[ -d $HOME/EBI_config/bin ]]; then
 fi
 
 
-# genebuild.sh
+alias bsub-shell="bsub -Is -tty $SHELL"
+
+
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
 ################################################################################
-# load my version of the genebuild.sh configuration script
-#source "$HOME/dotfiles/ebi/genebuild.sh"
+export HIVE_EMAIL="$USER@ebi.ac.uk"
+export GENEBUILDER_ID=50
 
-#export ENSEMBL_SOFTWARE_HOME=/nfs/software/ensembl/RHEL7-JUL2017-core2
-ENSEMBL_SOFTWARE_HOME=/nfs/software/ensembl/RHEL7-JUL2017-core2
-
-# Homebrew (Linuxbrew)
-# https://www.ebi.ac.uk/seqdb/confluence/display/ENS/Linuxbrew
-#if [[ -f "${ENSEMBL_SOFTWARE_HOME}/envs/linuxbrew.sh" ]]; then
-#    source "${ENSEMBL_SOFTWARE_HOME}/envs/linuxbrew.sh"
-#fi
-#if [[ -f "$HOME/dotfiles/ebi/linuxbrew.sh" ]]; then
-#    source "$HOME/dotfiles/ebi/linuxbrew.sh"
-#fi
+#ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
+ENSEMBL_RELEASE="104"
 
 # MySQL commands
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
 if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
     export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
 fi
-
-export HIVE_EMAIL="${USER}@ebi.ac.uk"
-export GENEBUILDER_ID=50
-
-#ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
-ENSEMBL_RELEASE="104"
 ################################################################################
 
-#LINUXBREW_BIN="${ENSEMBL_SOFTWARE_HOME}/linuxbrew/bin"
-#alias git="${LINUXBREW_BIN}/git"
+
+load_homebrew() {
+    ### Homebrew (Linuxbrew)
+    # /nfs/software/ensembl/RHEL7-JUL2017-core2/envs/minimal.sh
+    # /nfs/software/ensembl/RHEL7-JUL2017-core2/envs/linuxbrew.sh
+    export ENSEMBL_SOFTWARE_HOME=/nfs/software/ensembl/RHEL7-JUL2017-core2
+
+    export HOMEBREW_ENSEMBL_MOONSHINE_ARCHIVE=/nfs/software/ensembl/ENSEMBL_MOONSHINE_ARCHIVE
+    export ENSEMBL_MOONSHINE_ARCHIVE=/nfs/software/ensembl/ENSEMBL_MOONSHINE_ARCHIVE
+
+    export LINUXBREW_HOME=/nfs/software/ensembl/RHEL7-JUL2017-core2/linuxbrew
+    export PATH="$LINUXBREW_HOME/bin:$LINUXBREW_HOME/sbin:$PATH"
+    export MANPATH="$LINUXBREW_HOME/share/man:$MANPATH"
+    export INFOPATH="$LINUXBREW_HOME/share/info:$INFOPATH"
+    export HOMEBREW_FORCE_BREWED_CURL=1
+}
 
 
-### plenv
-#if [[ -f "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh" ]]; then
-#    source "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh"
-#fi
+### Python pyenv
+PYENV_ROOT="$NFS_ROOT/.pyenv"
+[[ -d "$PYENV_ROOT" ]] && export PYENV_ROOT
+
+### Node.js nvm
+NVM_DIR="$HOME/.nvm"
+[[ -d "$NVM_DIR" ]] && export NVM_DIR
+
+### Perl plenv
 PLENV_ROOT="/nfs/software/ensembl/RHEL7-JUL2017-core2/plenv"
-
-### pyenv
-PYENV_ROOT="${NFS_ROOT}/.pyenv"

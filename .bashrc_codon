@@ -51,7 +51,7 @@ ENSEMBL_RELEASE="104"
 
 
 load_homebrew() {
-    ### Homebrew
+    ### Homebrew (Linuxbrew)
     # /hps/software/users/ensembl/ensw/latest/envs/minimal.sh
     # /hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/envs/linuxbrew.sh
     export ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
