@@ -84,14 +84,9 @@ setup_python_environment() {
     INFOPATH="$LINUXBREW_HOME/share/info:$INFOPATH"
     ################################################################################
 
-    # load Python build dependencies
-    CC=gcc-10
-    CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include"
-    LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64"
-
     # install latest Python version
     PYTHON_LATEST_VERSION=$(pyenv latest --print)
-    pyenv install $PYTHON_LATEST_VERSION
+    CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install $PYTHON_LATEST_VERSION
     pyenv global $PYTHON_LATEST_VERSION
 
     # upgrade global Python pip
