@@ -29,7 +29,7 @@ if [[ -d $HOME/EBI_config/bin ]]; then
 fi
 
 
-alias bsub-shell="bsub -Is -tty $SHELL"
+alias bsub-shell="bsub -q production -Is -tty $SHELL"
 
 
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
