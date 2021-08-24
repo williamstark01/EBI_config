@@ -278,4 +278,4 @@ main
 
 
 echo ""
-echo "Account setup successful!"
+echo "Config setup successful!"
