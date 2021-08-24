@@ -1,30 +1,13 @@
-# ws dotfiles
+# EBI account setup
 
-My configuration files and setup script for a Kubuntu desktop or an Ubuntu server. Tested with version 20.04 LTS.
+Single command EBI account setup for Genebuild annotation and Python development.
 
-Bootstrap a system with:
+Setup your account with:
 ```
-curl https://raw.githubusercontent.com/williamstark01/dotfiles/master/setup.sh | bash
+curl https://raw.githubusercontent.com/williamstark01/EBI_account_setup/master/setup.sh | bash
 ```
 
 Download the setup script:
 ```
-curl -O https://raw.githubusercontent.com/williamstark01/dotfiles/master/setup.sh
-```
-
-
-## third party files
-
-[git-completion.bash](https://github.com/git/git/blob/master/contrib/completion/git-completion.bash) : Bash Git completion support
-
-update:
-```
-curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash
-```
-
-[git-prompt.sh](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh) : Bash Git prompt support
-
-update:
-```
-curl -O https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+curl -O https://raw.githubusercontent.com/williamstark01/EBI_account_setup/master/setup.sh
 ```

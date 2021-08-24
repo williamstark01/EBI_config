@@ -1,23 +1,14 @@
 #!/usr/bin/env bash
 
-# William Stark (william.stark.5000@gmail.com)
+# William Stark (william@ebi.ac.uk)
+
+
+# Set up configuration and applications on the Codon cluster.
 
 
 # Exit immediately if a pipeline (which may consist of a single  simple  command),
 # a list, or a compound command, exits with a non-zero status.
 set -e
-
-
-STANDARD_PACKAGES=(
-    dos2unix
-    hashdeep
-    git
-    python-argcomplete
-    ripgrep
-    ssh
-    tmux
-    xclip
-)
 
 
 yes_no_question() {
@@ -54,17 +45,7 @@ backup_datetime() {
 }
 
 
-create_data_directory() {
-    sudo mkdir --parents --verbose /data
-
-    sudo chown --verbose $SCRIPT_USER:$SCRIPT_USER /data
-
-    # create symbolic link /d to /data
-    sudo ln --symbolic --force --verbose /data /d
-}
-
-
-setup_python() {
+setup_python_environment() {
     # https://www.python.org/
 
     # install pyenv
@@ -72,14 +53,15 @@ setup_python() {
     if [[ -n "$PYENV_ROOT" ]]; then
         backup_datetime "$PYENV_ROOT"
     else
-        PYENV_ROOT="$HOME/.pyenv"
-        export "$PYENV_ROOT"
+        PYENV_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER/.pyenv"
+        export PYENV_ROOT
     fi
     # https://github.com/pyenv/pyenv-installer
     curl https://pyenv.run | bash
 
     # enable pyenv
     export PATH="$PYENV_ROOT/bin:$PATH"
+    #eval "$(pyenv init --path)"
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 
@@ -87,12 +69,24 @@ setup_python() {
     # https://github.com/momo-lab/xxenv-latest
     git clone https://github.com/momo-lab/xxenv-latest.git "$(pyenv root)"/plugins/xxenv-latest
 
-    # install Python build dependencies
-    # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
-    sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+    # load cluster Homebrew
+    ################################################################################
+    HOMEBREW_ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+    ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
 
+    LINUXBREW_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/linuxbrew
+    PATH="$LINUXBREW_HOME/bin:$LINUXBREW_HOME/sbin:$PATH"
+    MANPATH="$LINUXBREW_HOME/share/man:$MANPATH"
+    INFOPATH="$LINUXBREW_HOME/share/info:$INFOPATH"
+    ################################################################################
+
+    # load Python build dependencies
+    CC=gcc-10
+    CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include"
+    LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64"
+
+    # install latest Python version
     PYTHON_LATEST_VERSION=$(pyenv latest --print)
-
     pyenv install $PYTHON_LATEST_VERSION
     pyenv global $PYTHON_LATEST_VERSION
 
@@ -104,12 +98,9 @@ setup_python() {
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
 
     # link $HOME/.pylintrc and .config/flake8
-    ln --symbolic --force --verbose $HOME/dotfiles/.pylintrc $HOME/
-    ln --symbolic --force --verbose $HOME/dotfiles/.config/flake8 $HOME/.config/
-}
+    #ln --symbolic --force --verbose $HOME/dotfiles/.pylintrc $HOME/
+    #ln --symbolic --force --verbose $HOME/dotfiles/.config/flake8 $HOME/.config/
 
-
-setup_python_programs() {
     # install pipx
     # https://github.com/pypa/pipx
     python3 -m pip install --user pipx
@@ -120,9 +111,6 @@ setup_python_programs() {
 
     # https://github.com/psf/black
     pipx install black
-
-    # https://github.com/ytdl-org/youtube-dl
-    pipx install youtube-dl
 }
 
 
@@ -186,7 +174,7 @@ install_z() {
     # z
     # https://github.com/rupa/z
     # NOTE
-    # check my own fork that supports smart case sensitivity by merging ericbn's
+    # for smart case sensitivity support check my own fork that merges ericbn's
     # pull request https://github.com/rupa/z/pull/221
     # https://github.com/williamstark01/z
     mkdir --parents --verbose $HOME/data/programs
@@ -197,129 +185,36 @@ install_z() {
 }
 
 
-install_desktop_packages() {
-    # CopyQ
-    # https://github.com/hluk/CopyQ
-
-    # Evince
-    # https://wiki.gnome.org/Apps/Evince
-
-    # filelight
-    # https://apps.kde.org/filelight/
-
-    # Gimp
-    # https://www.gimp.org/
-    # https://launchpad.net/~ubuntuhandbook1/+archive/ubuntu/gimp
-    #sudo add-apt-repository ppa:ubuntuhandbook1/gimp
-
-    # GNOME Disks
-    # https://wiki.gnome.org/Apps/Disks
-    # https://gitlab.gnome.org/GNOME/gnome-disk-utility
-
-    # GoldenDict
-    # http://goldendict.org/
-
-    # GParted
-    # https://gparted.org/
-
-    # Grub Customizer
-    # https://launchpad.net/grub-customizer
-
-    # KDiff3
-    # https://apps.kde.org/kdiff3/
-
-    # KeePassXC
-    # https://keepassxc.org/
-    # https://github.com/keepassxreboot/keepassxc
-
-    # qBittorrent
-    # https://www.qbittorrent.org/
-    # https://github.com/qbittorrent/qBittorrent
-
-    # Thunderbird
-    # https://www.thunderbird.net/
-
-    DESKTOP_PACKAGES=(
-        copyq
-        evince
-        filelight
-        gimp
-        gnome-disk-utility
-        goldendict
-        gparted
-        grub-customizer
-        kdiff3
-        keepassxc
-        qbittorrent
-        thunderbird
-    )
-
-    sudo apt install -y $DESKTOP_PACKAGES
-}
-
-
-install_google_chrome() {
-    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-    sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-    sudo apt install -y google-chrome-stable
-}
-
-
-setup_ufw_firewall() {
-    echo "Setting up the ufw firewall..."
-
-    # deny all incoming connections, allow outgoing connections
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
-
-    # allow incoming SSH connections
-    sudo ufw allow ssh
-
-    # allow incoming HTTP and HTTPS connections
-    sudo ufw allow http
-    sudo ufw allow https
-
-    # turn on the firewall
-    sudo ufw enable
-
-    # check the status of the firewall
-    sudo ufw status
-}
-
-
 main() {
+    # verify running on the Codon cluster
+    if [[ $LSF_ENVDIR != "/ebi/lsf/codon/conf" ]]; then
+        echo "This setup script is designed for the Codon cluster, exiting."
+        kill -INT $$
+    fi
+
     cd $HOME
-
-    # global variables
-    SCRIPT_USER=$USER
-    echo "logged in as user $SCRIPT_USER"
-
-
-    YES_NO_ANSWER=$(yes_no_question "Do you have superuser rights on this system?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        SUPERUSER_RIGHTS=1
-    else
-        SUPERUSER_RIGHTS=0
-        echo "Skipping commands that require superuser rights."
-    fi
-
-    if [[ "$SUPERUSER_RIGHTS" == "1" ]]; then
-        YES_NO_ANSWER=$(yes_no_question "Update and upgrade the system?")
-        if [[ $YES_NO_ANSWER = "y" ]]; then
-            sudo apt update && sudo apt -y upgrade && sudo apt dist-upgrade
-        fi
-    fi
-
-
-    # configuration
-    ################################################################################
 
     # create $HOME directories
     mkdir --parents --verbose bin
     mkdir --parents --verbose ".config"
 
+    TEAM_NAME=genebuild
+
+    NFS_ROOT="/nfs/production/flicek/ensembl/$TEAM_NAME/$USER"
+    HPS_ROOT="/hps/nobackup/flicek/ensembl/$TEAM_NAME/$USER"
+    SOFTWARE_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER"
+
+    # create nfs, hps, and software user directories
+    mkdir --parents --verbose "$NFS_ROOT"
+    bsub -Is mkdir --parents --verbose "$HPS_ROOT"
+    mkdir --parents --verbose "$SOFTWARE_ROOT"
+
+
     backup_datetime dotfiles
+    backup_datetime EBI_config
+
     git clone https://github.com/williamstark01/dotfiles.git
+    git clone https://github.com/williamstark01/EBI_config.git
 
 
     DOTFILES=(
@@ -329,77 +224,48 @@ main() {
         .profile
         .tmux.conf
     )
-
     for DOTFILE in "${DOTFILES[@]}"; do
         backup_datetime "$DOTFILE"
-    done
-
-    for DOTFILE in "${DOTFILES[@]}"; do
         ln --symbolic --force --verbose $HOME/dotfiles/"$DOTFILE" $HOME/
     done
 
-
     backup_datetime .bashrc_local
     cp --interactive --verbose $HOME/dotfiles/.bashrc_local $HOME/
-
-    backup_datetime .gitconfig
-    cp --interactive --verbose $HOME/dotfiles/.gitconfig $HOME/
 
     # Konsole Tomorrow theme
     # https://github.com/dram/konsole-tomorrow-theme
     if [[ -d "$HOME/.local/share/konsole/" ]]; then
         ln --symbolic --force --verbose $HOME/dotfiles/.local/share/konsole/Tomorrow.colorscheme $HOME/.local/share/konsole/
     fi
-    ################################################################################
 
 
-    if [[ "$SUPERUSER_RIGHTS" == "1" ]]; then
-        sudo apt install -y $STANDARD_PACKAGES
+    ln --symbolic --force --verbose $HOME/EBI_config/.bashrc_codon $HOME/
 
-        # setup unattended security upgrades
-        sudo apt install unattended-upgrades
-        sudo dpkg-reconfigure unattended-upgrades
-
-        create_data_directory
-
-        setup_python
-        setup_python_programs
-
-        setup_neovim
-
-        setup_nodejs
-
-        install_z
-
-        YES_NO_ANSWER=$(yes_no_question "Is this a desktop system?")
-        if [[ $YES_NO_ANSWER = "y" ]]; then
-            install_desktop_packages
-
-            install_google_chrome
-        fi
-
-        YES_NO_ANSWER=$(yes_no_question "Is this a server system?")
-        if [[ $YES_NO_ANSWER = "y" ]]; then
-            # Fail2ban
-            # https://github.com/fail2ban/fail2ban
-
-            # ufw
-            # https://launchpad.net/ufw
-
-            sudo apt install -y fail2ban ufw
-
-            setup_ufw_firewall
-        fi
-    fi
+    backup_datetime .gitconfig
+    cp --interactive --verbose $HOME/EBI_config/.gitconfig $HOME/
 
 
-    # install the linux-headers and build-essential packages
-    if [[ "$SUPERUSER_RIGHTS" == "1" ]]; then
-        YES_NO_ANSWER=$(yes_no_question "Install linux-headers and build-essential packages?")
-        if [[ $YES_NO_ANSWER = "y" ]]; then
-            sudo apt install -y linux-headers-generic build-essential
-        fi
-    fi
+    STANDARD_PACKAGES=(
+        git
+        python-argcomplete
+        ripgrep
+        tmux
+    )
+
+
+    # TODO
+    # install programs used on the cluster
+    #sudo apt install -y $STANDARD_PACKAGES
+
+
+    setup_python_environment
+
+    # TODO
+    # adapt installation to the Codon cluster
+    setup_neovim
+    setup_nodejs
+
+    install_z
 }
 
 
@@ -407,4 +273,4 @@ main
 
 
 echo ""
-echo "System setup successful!"
+echo "Account setup successful!"

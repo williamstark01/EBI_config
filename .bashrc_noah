@@ -3,6 +3,13 @@
 # William Stark (william@ebi.ac.uk)
 
 
+# verify running in the EBI / Noah cluster
+if [[ $LSF_ENVDIR != "/ebi/lsf/ebi/conf" ]]; then
+    echo "This configuration is meant to be used on the Noah cluster, exiting."
+    kill -INT $$
+fi
+
+
 # (try to) fix EBI cluster / brew / tmux issue:
 # """
 # Package bash-completion was not found in the pkg-config search path.
@@ -20,23 +27,17 @@ export PKG_CONFIG_PATH="/usr/share/pkgconfig/"
 export GIT_INTERNAL_GETTEXT_TEST_FALLBACKS=1
 
 
-export HPS_ROOT="/hps/nobackup2/production/ensembl/$USER"
 export NFS_ROOT="/nfs/production/panda/ensembl/$USER"
+export HPS_ROOT="/hps/nobackup2/production/ensembl/$USER"
 
-alias hps="cd $HPS_ROOT"
 alias nfs="cd $NFS_ROOT"
-
+alias hps="cd $HPS_ROOT"
 
 export ENSCODE="${NFS_ROOT}/enscode"
 
 
-### Python
-# don't write bytecode on disk
-export PYTHONDONTWRITEBYTECODE=1
-
-
-if [[ -d $HOME/dotfiles/ebi/bin ]]; then
-    export PATH="$HOME/dotfiles/ebi/bin:$PATH"
+if [[ -d $HOME/EBI_config/bin ]]; then
+    export PATH="$HOME/EBI_config/bin:$PATH"
 fi
 
 
@@ -71,8 +72,8 @@ export GENEBUILDER_ID=50
 ENSEMBL_RELEASE="104"
 ################################################################################
 
-LINUXBREW_BIN="${ENSEMBL_SOFTWARE_HOME}/linuxbrew/bin"
-alias git="${LINUXBREW_BIN}/git"
+#LINUXBREW_BIN="${ENSEMBL_SOFTWARE_HOME}/linuxbrew/bin"
+#alias git="${LINUXBREW_BIN}/git"
 
 
 ### plenv

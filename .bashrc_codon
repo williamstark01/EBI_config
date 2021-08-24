@@ -1,0 +1,74 @@
+# vim: set filetype=sh :
+
+# William Stark (william@ebi.ac.uk)
+
+
+# verify running in the Codon cluster
+if [[ $LSF_ENVDIR != "/ebi/lsf/codon/conf" ]]; then
+    echo "This configuration is meant to be used on the Codon cluster, exiting."
+    kill -INT $$
+fi
+
+
+TEAM_NAME=genebuild
+
+
+export NFS_ROOT="/nfs/production/flicek/ensembl/$TEAM_NAME/$USER"
+export HPS_ROOT="/hps/nobackup/flicek/ensembl/$TEAM_NAME/$USER"
+export SOFTWARE_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER"
+
+alias nfs="cd $NFS_ROOT"
+alias hps="cd $HPS_ROOT"
+alias software="cd $SOFTWARE_ROOT"
+
+export ENSCODE="/hps/software/users/ensembl/repositories/$USER"
+
+
+if [[ -d $HOME/EBI_config/bin ]]; then
+    export PATH="$HOME/EBI_config/bin:$PATH"
+fi
+
+
+# genebuild.sh
+# https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
+################################################################################
+# load my version of the genebuild.sh configuration script
+#source "$HOME/dotfiles/ebi/genebuild.sh"
+
+ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
+export ENSEMBL_SOFTWARE_HOME
+
+# MySQL commands
+# https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
+if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
+    export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
+fi
+
+export HIVE_EMAIL="${USER}@ebi.ac.uk"
+export GENEBUILDER_ID=50
+
+#ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
+ENSEMBL_RELEASE="104"
+################################################################################
+
+
+### Homebrew
+################################################################################
+export HOMEBREW_ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+export ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+
+export LINUXBREW_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/linuxbrew
+export PATH="$LINUXBREW_HOME/bin:$LINUXBREW_HOME/sbin:$PATH"
+export MANPATH="$LINUXBREW_HOME/share/man:$MANPATH"
+export INFOPATH="$LINUXBREW_HOME/share/info:$INFOPATH"
+################################################################################
+
+
+### plenv
+#if [[ -f "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh" ]]; then
+#    source "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh"
+#fi
+#PLENV_ROOT="/nfs/software/ensembl/RHEL7-JUL2017-core2/plenv"
+
+### pyenv
+PYENV_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER/.pyenv"
