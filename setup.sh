@@ -185,6 +185,29 @@ install_z() {
 }
 
 
+install_programs() {
+    STANDARD_PACKAGES=(
+        git
+        python-argcomplete
+        ripgrep
+        tmux
+    )
+
+    # TODO
+    # install programs used on the cluster
+    #sudo apt install -y $STANDARD_PACKAGES
+
+    setup_python_environment
+
+    # TODO
+    # adapt installation to the Codon cluster
+    #setup_neovim
+    #setup_nodejs
+
+    install_z
+}
+
+
 main() {
     # verify running on the Codon cluster
     if [[ $LSF_ENVDIR != "/ebi/lsf/codon/conf" ]]; then
@@ -244,27 +267,10 @@ main() {
     ############################################################################
 
 
-    STANDARD_PACKAGES=(
-        git
-        python-argcomplete
-        ripgrep
-        tmux
-    )
-
-
-    # TODO
-    # install programs used on the cluster
-    #sudo apt install -y $STANDARD_PACKAGES
-
-
-    setup_python_environment
-
-    # TODO
-    # adapt installation to the Codon cluster
-    setup_neovim
-    setup_nodejs
-
-    install_z
+    YES_NO_ANSWER=$(yes_no_question "Install additional programs?")
+    if [[ $YES_NO_ANSWER = "y" ]]; then
+        install_programs
+    fi
 }
 
 
