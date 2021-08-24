@@ -45,6 +45,61 @@ backup_datetime() {
 }
 
 
+install_z() {
+    # z
+    # https://github.com/rupa/z
+    # NOTE
+    # for smart case sensitivity support check my own fork that merges ericbn's
+    # pull request https://github.com/rupa/z/pull/221
+    # https://github.com/williamstark01/z
+    mkdir --parents --verbose $HOME/data/programs
+
+    Z_ROOT_DIRECTORY="$HOME/data/programs/z"
+    [[ -d "$Z_ROOT_DIRECTORY" ]] && backup_datetime "$Z_ROOT_DIRECTORY"
+    git clone https://github.com/rupa/z.git "$Z_ROOT_DIRECTORY"
+}
+
+
+setup_neovim() {
+    # https://github.com/neovim/neovim
+
+    backup_datetime $HOME/.config/nvim/init.vim
+
+    # https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
+
+    sudo add-apt-repository ppa:neovim-ppa/stable
+    sudo apt install -y neovim
+
+    # Python modules prerequisites
+    sudo apt install python-dev python-pip python3-dev python3-pip
+
+    # use Neovim for all editor alternatives
+    sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
+    sudo update-alternatives --config vi
+    sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
+    sudo update-alternatives --config vim
+    sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
+    sudo update-alternatives --config editor
+
+    mkdir --parents --verbose $HOME/.config/nvim/
+    ln --symbolic --force --verbose $HOME/dotfiles/.config/nvim/init.vim $HOME/.config/nvim/
+
+    # setup a Python virtual environment for Neovim
+    # https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim#using-virtual-environments
+    pyenv virtualenv neovim
+    pyenv activate neovim
+    pip install neovim
+    pyenv deactivate
+
+    # setup vim-plug
+    # https://github.com/junegunn/vim-plug
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+    # install packages with vim-plug
+    vim +PlugInstall +qa
+}
+
+
 setup_python_environment() {
     # https://www.python.org/
 
@@ -113,74 +168,17 @@ setup_python_environment() {
 }
 
 
-setup_neovim() {
-    # https://github.com/neovim/neovim
-
-    backup_datetime $HOME/.config/nvim/init.vim
-
-    # https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
-
-    sudo add-apt-repository ppa:neovim-ppa/stable
-    sudo apt install -y neovim
-
-    # Python modules prerequisites
-    sudo apt install python-dev python-pip python3-dev python3-pip
-
-    # use Neovim for all editor alternatives
-    sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-    sudo update-alternatives --config vi
-    sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-    sudo update-alternatives --config vim
-    sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-    sudo update-alternatives --config editor
-
-    mkdir --parents --verbose $HOME/.config/nvim/
-    ln --symbolic --force --verbose $HOME/dotfiles/.config/nvim/init.vim $HOME/.config/nvim/
-
-    # setup a Python virtual environment for Neovim
-    # https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim#using-virtual-environments
-    pyenv virtualenv neovim
-    pyenv activate neovim
-    pip install neovim
-    pyenv deactivate
-
-    # setup vim-plug
-    # https://github.com/junegunn/vim-plug
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-
-    # install packages with vim-plug
-    vim +PlugInstall +qa
-}
-
-
 setup_nodejs() {
     # https://nodejs.org/
 
     # https://github.com/nvm-sh/nvm
+    export NVM_DIR="$SOFTWARE_ROOT/.nvm"
+    mkdir --parents --verbose "$NVM_DIR"
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 
-    # TODO
-    # verify path is correct
-    # https://superuser.com/questions/365847/where-should-the-xdg-config-home-variable-be-defined/425712#425712
-    export NVM_DIR="$HOME/.nvm"
     [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 
     nvm install --lts
-}
-
-
-install_z() {
-    # z
-    # https://github.com/rupa/z
-    # NOTE
-    # for smart case sensitivity support check my own fork that merges ericbn's
-    # pull request https://github.com/rupa/z/pull/221
-    # https://github.com/williamstark01/z
-    mkdir --parents --verbose $HOME/data/programs
-
-    Z_ROOT_DIRECTORY="$HOME/data/programs/z"
-    [[ -d "$Z_ROOT_DIRECTORY" ]] && backup_datetime "$Z_ROOT_DIRECTORY"
-    git clone https://github.com/rupa/z.git "$Z_ROOT_DIRECTORY"
 }
 
 
@@ -195,15 +193,6 @@ install_programs() {
     # TODO
     # install programs used on the cluster
     #sudo apt install -y $STANDARD_PACKAGES
-
-    setup_python_environment
-
-    # TODO
-    # adapt installation to the Codon cluster
-    #setup_neovim
-    #setup_nodejs
-
-    install_z
 }
 
 
@@ -265,10 +254,22 @@ main() {
     ln --symbolic --force --verbose $HOME/EBI_config/.bashrc_codon $HOME/
     ############################################################################
 
+    install_z
 
-    YES_NO_ANSWER=$(yes_no_question "Install additional programs?")
+    #install_programs
+
+    # TODO
+    # adapt installation to the Codon cluster
+    #setup_neovim
+
+    YES_NO_ANSWER=$(yes_no_question "Install Python development environment?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
-        install_programs
+        setup_python_environment
+    fi
+
+    YES_NO_ANSWER=$(yes_no_question "Install Node.js?")
+    if [[ $YES_NO_ANSWER = "y" ]]; then
+        setup_nodejs
     fi
 }
 

@@ -32,22 +32,21 @@ fi
 alias bsub-shell="bsub -Is -tty $SHELL"
 
 
-# genebuild.sh
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
 ################################################################################
 export ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
+
+export HIVE_EMAIL="$USER@ebi.ac.uk"
+export GENEBUILDER_ID=50
+
+#ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
+ENSEMBL_RELEASE="104"
 
 # MySQL commands
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
 #if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
 #    export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
 #fi
-
-export HIVE_EMAIL="${USER}@ebi.ac.uk"
-export GENEBUILDER_ID=50
-
-#ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
-ENSEMBL_RELEASE="104"
 ################################################################################
 
 
@@ -67,11 +66,10 @@ load_homebrew() {
 }
 
 
-### plenv
-#if [[ -f "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh" ]]; then
-#    source "${ENSEMBL_SOFTWARE_HOME}/envs/plenv.sh"
-#fi
-#PLENV_ROOT="/nfs/software/ensembl/RHEL7-JUL2017-core2/plenv"
-
-### pyenv
+### Python pyenv
 PYENV_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER/.pyenv"
+[[ -d "$PYENV_ROOT" ]] && export PYENV_ROOT
+
+### Node.js nvm
+NVM_DIR="/hps/software/users/ensembl/$TEAM_NAME/$USER/.nvm"
+[[ -d "$NVM_DIR" ]] && export NVM_DIR
