@@ -52,51 +52,10 @@ install_z() {
     # for smart case sensitivity support check my own fork that merges ericbn's
     # pull request https://github.com/rupa/z/pull/221
     # https://github.com/williamstark01/z
-    mkdir --parents --verbose $HOME/data/programs
 
-    Z_ROOT_DIRECTORY="$HOME/data/programs/z"
+    Z_ROOT_DIRECTORY="$SOFTWARE_ROOT/programs/z"
     [[ -d "$Z_ROOT_DIRECTORY" ]] && backup_datetime "$Z_ROOT_DIRECTORY"
     git clone https://github.com/rupa/z.git "$Z_ROOT_DIRECTORY"
-}
-
-
-setup_neovim() {
-    # https://github.com/neovim/neovim
-
-    backup_datetime $HOME/.config/nvim/init.vim
-
-    # https://github.com/neovim/neovim/wiki/Installing-Neovim#ubuntu
-
-    sudo add-apt-repository ppa:neovim-ppa/stable
-    sudo apt install -y neovim
-
-    # Python modules prerequisites
-    sudo apt install python-dev python-pip python3-dev python3-pip
-
-    # use Neovim for all editor alternatives
-    sudo update-alternatives --install /usr/bin/vi vi /usr/bin/nvim 60
-    sudo update-alternatives --config vi
-    sudo update-alternatives --install /usr/bin/vim vim /usr/bin/nvim 60
-    sudo update-alternatives --config vim
-    sudo update-alternatives --install /usr/bin/editor editor /usr/bin/nvim 60
-    sudo update-alternatives --config editor
-
-    mkdir --parents --verbose $HOME/.config/nvim/
-    ln --symbolic --force --verbose $HOME/dotfiles/.config/nvim/init.vim $HOME/.config/nvim/
-
-    # setup a Python virtual environment for Neovim
-    # https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim#using-virtual-environments
-    pyenv virtualenv neovim
-    pyenv activate neovim
-    pip install neovim
-    pyenv deactivate
-
-    # setup vim-plug
-    # https://github.com/junegunn/vim-plug
-    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-
-    # install packages with vim-plug
-    vim +PlugInstall +qa
 }
 
 
@@ -108,7 +67,7 @@ setup_python_environment() {
     if [[ -n "$PYENV_ROOT" ]]; then
         backup_datetime "$PYENV_ROOT"
     else
-        PYENV_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER/.pyenv"
+        PYENV_ROOT="$SOFTWARE_ROOT/.pyenv"
         export PYENV_ROOT
     fi
     # https://github.com/pyenv/pyenv-installer
@@ -168,6 +127,44 @@ setup_python_environment() {
 }
 
 
+setup_neovim() {
+    # https://github.com/neovim/neovim
+
+    backup_datetime "$HOME/.config/nvim/init.vim"
+
+    # https://github.com/neovim/neovim/wiki/Installing-Neovim#linux
+    # https://github.com/neovim/neovim/releases/latest
+
+    NEOVIM_DIR="$SOFTWARE_ROOT/programs/neovim"
+    mkdir --parents --verbose "$NEOVIM_DIR"
+    cd "$NEOVIM_DIR"
+    curl -LO https://github.com/neovim/neovim/releases/download/stable/nvim.appimage
+    chmod u+x "$NEOVIM_DIR/nvim.appimage"
+    ./nvim.appimage --appimage-extract
+    cd "$HOME"
+
+    ln --symbolic --force --verbose "$NEOVIM_DIR/squashfs-root/AppRun" "$HOME/bin/vim"
+
+    mkdir --parents --verbose "$HOME/.config/nvim"
+    ln --symbolic --force --verbose "$HOME/dotfiles/.config/nvim/init.vim" "$HOME/.config/nvim"
+
+    # setup a Python virtual environment for Neovim
+    # https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim#using-virtual-environments
+    pyenv virtualenv neovim
+    pyenv activate neovim
+    pip install --upgrade pip
+    pip install neovim
+    pyenv deactivate
+
+    # setup vim-plug
+    # https://github.com/junegunn/vim-plug
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+    # install packages with vim-plug
+    vim +PlugInstall +qa
+}
+
+
 setup_nodejs() {
     # https://nodejs.org/
 
@@ -193,6 +190,16 @@ install_programs() {
     # TODO
     # install programs used on the cluster
     #sudo apt install -y $STANDARD_PACKAGES
+
+    # TODO
+    # setup Rust
+
+    # TODO
+    # install with Cargo
+    RUST_PACKAGES=(
+        delta
+        fd
+    )
 }
 
 
@@ -206,8 +213,10 @@ main() {
     cd $HOME
 
     # create $HOME directories
-    mkdir --parents --verbose bin
-    mkdir --parents --verbose ".config"
+    mkdir --parents --verbose "$HOME/data"
+    mkdir --parents --verbose "$HOME/bin"
+    mkdir --parents --verbose "$HOME/.config"
+    mkdir --parents --verbose "$HOME/data/programs"
 
     TEAM_NAME=genebuild
 
@@ -258,13 +267,14 @@ main() {
 
     #install_programs
 
-    # TODO
-    # adapt installation to the Codon cluster
-    #setup_neovim
-
     YES_NO_ANSWER=$(yes_no_question "Install Python development environment?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_python_environment
+    fi
+
+    YES_NO_ANSWER=$(yes_no_question "Install Neovim (requires Python)?")
+    if [[ $YES_NO_ANSWER = "y" ]]; then
+        setup_neovim
     fi
 
     YES_NO_ANSWER=$(yes_no_question "Install Node.js?")

@@ -66,10 +66,15 @@ load_homebrew() {
 }
 
 
+# z
+# https://github.com/rupa/z
+Z_ROOT_DIRECTORY="$SOFTWARE_ROOT/programs/z"
+[[ -d "$Z_ROOT_DIRECTORY" ]] && export Z_ROOT_DIRECTORY
+
 ### Python pyenv
-PYENV_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER/.pyenv"
+PYENV_ROOT="$SOFTWARE_ROOT/.pyenv"
 [[ -d "$PYENV_ROOT" ]] && export PYENV_ROOT
 
 ### Node.js nvm
-NVM_DIR="/hps/software/users/ensembl/$TEAM_NAME/$USER/.nvm"
+NVM_DIR="$SOFTWARE_ROOT/.nvm"
 [[ -d "$NVM_DIR" ]] && export NVM_DIR
