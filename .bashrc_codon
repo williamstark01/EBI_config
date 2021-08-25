@@ -4,7 +4,7 @@
 
 
 # verify running in the Codon cluster
-if [[ $LSF_ENVDIR != "/ebi/lsf/codon/conf" ]]; then
+if [[ "$LSF_ENVDIR" != "/ebi/lsf/codon/conf" ]]; then
     echo "This configuration is meant to be used on the Codon cluster, exiting."
     kill -INT $$
 fi
@@ -24,15 +24,20 @@ alias software="cd $SOFTWARE_ROOT"
 export ENSCODE="/hps/software/users/ensembl/repositories/$USER"
 
 
-if [[ -d $HOME/EBI_config/bin ]]; then
+if [[ -d "$HOME/EBI_config/bin" ]]; then
     export PATH="$HOME/EBI_config/bin:$PATH"
 fi
 
 
+# open a bsub interactive shell
 alias bsub-shell="bsub -q production -Is -tty $SHELL"
 
 
-source "$SOFTWARE_ROOT/programs/tmux-bash-completion/completions/tmux"
+# tmux bash completion
+# https://github.com/imomaliev/tmux-bash-completion
+if [[ -d "$SOFTWARE_ROOT/programs/tmux-bash-completion" ]]; then
+    source "$SOFTWARE_ROOT/programs/tmux-bash-completion/completions/tmux"
+fi
 
 
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data

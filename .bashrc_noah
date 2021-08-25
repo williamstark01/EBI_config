@@ -4,7 +4,7 @@
 
 
 # verify running in the EBI / Noah cluster
-if [[ $LSF_ENVDIR != "/ebi/lsf/ebi/conf" ]]; then
+if [[ "$LSF_ENVDIR" != "/ebi/lsf/ebi/conf" ]]; then
     echo "This configuration is meant to be used on the Noah cluster, exiting."
     kill -INT $$
 fi
@@ -36,7 +36,7 @@ alias hps="cd $HPS_ROOT"
 export ENSCODE="$NFS_ROOT/enscode"
 
 
-if [[ -d $HOME/EBI_config/bin ]]; then
+if [[ -d "$HOME/EBI_config/bin" ]]; then
     export PATH="$HOME/EBI_config/bin:$PATH"
 fi
 
