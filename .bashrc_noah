@@ -44,6 +44,9 @@ fi
 alias bsub-shell="bsub -q production-rh74 -Is -tty $SHELL"
 
 
+source "$HOME/data/programs/tmux-bash-completion/completions/tmux"
+
+
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
 ################################################################################
 export HIVE_EMAIL="$USER@ebi.ac.uk"

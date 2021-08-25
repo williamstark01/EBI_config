@@ -59,6 +59,16 @@ install_z() {
 }
 
 
+setup_tmux() {
+    # TODO
+    # install tmux
+
+    # tmux bash completion
+    # https://github.com/imomaliev/tmux-bash-completion
+    git clone https://github.com/imomaliev/tmux-bash-completion.git "$SOFTWARE_ROOT/programs/tmux-bash-completion"
+}
+
+
 setup_python_environment() {
     # https://www.python.org/
 
@@ -192,7 +202,6 @@ main() {
     mkdir --parents --verbose "$HOME/data"
     mkdir --parents --verbose "$HOME/bin"
     mkdir --parents --verbose "$HOME/.config"
-    mkdir --parents --verbose "$HOME/data/programs"
 
     TEAM_NAME=genebuild
 
@@ -204,6 +213,7 @@ main() {
     mkdir --parents --verbose "$NFS_ROOT"
     bsub -Is mkdir --parents --verbose "$HPS_ROOT"
     mkdir --parents --verbose "$SOFTWARE_ROOT"
+    mkdir --parents --verbose "$SOFTWARE_ROOT/programs"
 
 
     # dotfiles setup
@@ -244,11 +254,13 @@ main() {
     # TODO
     # install programs
     STANDARD_PACKAGES=(
-        git
         python-argcomplete
-        ripgrep
-        tmux
     )
+
+    YES_NO_ANSWER=$(yes_no_question "Install tmux?")
+    if [[ $YES_NO_ANSWER = "y" ]]; then
+        setup_tmux
+    fi
 
     YES_NO_ANSWER=$(yes_no_question "Install Python development environment?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
@@ -263,8 +275,10 @@ main() {
     # TODO
     # setup Rust and install with Cargo
     RUST_PACKAGES=(
+        exa
         delta
         fd
+        ripgrep
     )
 
     YES_NO_ANSWER=$(yes_no_question "Install Node.js?")

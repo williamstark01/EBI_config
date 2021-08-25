@@ -32,6 +32,9 @@ fi
 alias bsub-shell="bsub -q production -Is -tty $SHELL"
 
 
+source "$SOFTWARE_ROOT/programs/tmux-bash-completion/completions/tmux"
+
+
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENSGBD/Genebuild+virtual+user%2C+shared+environment+and+shared+data
 ################################################################################
 export ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
