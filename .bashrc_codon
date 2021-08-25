@@ -83,6 +83,12 @@ Z_ROOT_DIRECTORY="$SOFTWARE_ROOT/programs/z"
 PYENV_ROOT="$SOFTWARE_ROOT/.pyenv"
 [[ -d "$PYENV_ROOT" ]] && export PYENV_ROOT
 
+### Rust
+# https://www.rust-lang.org/
+[[ -d "$SOFTWARE_ROOT/.rustup" ]] && export RUSTUP_HOME="$SOFTWARE_ROOT/.rustup"
+[[ -d "$SOFTWARE_ROOT/.cargo" ]] && export CARGO_HOME="$SOFTWARE_ROOT/.cargo"
+[[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"
+
 ### Node.js nvm
 NVM_DIR="$SOFTWARE_ROOT/.nvm"
 [[ -d "$NVM_DIR" ]] && export NVM_DIR
