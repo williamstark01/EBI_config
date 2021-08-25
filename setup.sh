@@ -175,6 +175,23 @@ setup_neovim() {
 }
 
 
+setup_rust() {
+    # https://www.rust-lang.org/
+
+    export RUSTUP_HOME="$SOFTWARE_ROOT/.rustup"
+    export CARGO_HOME="$SOFTWARE_ROOT/.cargo"
+    export PATH="$CARGO_HOME/bin:$PATH"
+
+    # install Rust
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+    cargo install exa
+    cargo install fd-find
+    cargo install git-delta
+    cargo install ripgrep
+}
+
+
 setup_nodejs() {
     # https://nodejs.org/
 
@@ -257,31 +274,27 @@ main() {
         python-argcomplete
     )
 
-    YES_NO_ANSWER=$(yes_no_question "Install tmux?")
+    YES_NO_ANSWER=$(yes_no_question "Set up tmux?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_tmux
     fi
 
-    YES_NO_ANSWER=$(yes_no_question "Install Python development environment?")
+    YES_NO_ANSWER=$(yes_no_question "Set up Python development environment?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_python_environment
     fi
 
-    YES_NO_ANSWER=$(yes_no_question "Install Neovim (requires Python)?")
+    YES_NO_ANSWER=$(yes_no_question "Set up Neovim (requires Python)?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_neovim
     fi
 
-    # TODO
-    # setup Rust and install with Cargo
-    RUST_PACKAGES=(
-        exa
-        delta
-        fd
-        ripgrep
-    )
+    YES_NO_ANSWER=$(yes_no_question "Set up Rust and install packages?")
+    if [[ $YES_NO_ANSWER = "y" ]]; then
+        setup_rust
+    fi
 
-    YES_NO_ANSWER=$(yes_no_question "Install Node.js?")
+    YES_NO_ANSWER=$(yes_no_question "Set up Node.js?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_nodejs
     fi
