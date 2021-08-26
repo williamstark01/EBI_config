@@ -60,8 +60,23 @@ install_z() {
 
 
 setup_tmux() {
-    # TODO
-    # install tmux
+    # install third-party tmux AppImage
+    # https://github.com/uesyn/tmux-appimage
+    # (fork of https://github.com/nelsonenzo/tmux-appimage )
+
+    TMUX_DIR="$SOFTWARE_ROOT/programs/tmux"
+    mkdir --parents --verbose "$TMUX_DIR"
+    cd "$TMUX_DIR"
+    curl -LO https://github.com/uesyn/tmux-appimage/releases/download/3.2a/tmux-x86_64.AppImage
+    chmod u+x "$TMUX_DIR/tmux-x86_64.AppImage"
+    cd "$HOME"
+
+    ln --symbolic --force --verbose "$TMUX_DIR/tmux-x86_64.AppImage" "$HOME/bin/tmux"
+
+    # NOTE
+    # if original AppImage doesn't run extract and symlink
+    #./tmux-x86_64.AppImage --appimage-extract
+    #ln --symbolic --force --verbose "$TMUX_DIR/squashfs-root/AppRun" "$HOME/bin/tmux"
 
     # tmux bash completion
     # https://github.com/imomaliev/tmux-bash-completion
