@@ -74,7 +74,7 @@ setup_tmux() {
     ln --symbolic --force --verbose "$TMUX_DIR/tmux-x86_64.AppImage" "$HOME/bin/tmux"
 
     # NOTE
-    # if original AppImage doesn't run extract and symlink
+    # if original AppImage doesn't run, extract and symlink
     #./tmux-x86_64.AppImage --appimage-extract
     #ln --symbolic --force --verbose "$TMUX_DIR/squashfs-root/AppRun" "$HOME/bin/tmux"
 
@@ -276,12 +276,16 @@ main() {
     # https://github.com/williamstark01/EBI_config
     ############################################################################
     backup_datetime EBI_config
+
     git clone https://github.com/williamstark01/EBI_config.git
 
     ln --symbolic --force --verbose $HOME/EBI_config/.bashrc_codon $HOME/
     ############################################################################
 
-    install_z
+    YES_NO_ANSWER=$(yes_no_question "Install z?")
+    if [[ $YES_NO_ANSWER = "y" ]]; then
+        install_z
+    fi
 
     # TODO
     # install programs
@@ -320,4 +324,4 @@ main
 
 
 echo ""
-echo "Config setup successful!"
+echo "Setup successful!"
