@@ -84,6 +84,12 @@ load_homebrew() {
 PYENV_ROOT="$NFS_ROOT/.pyenv"
 [[ -d "$PYENV_ROOT" ]] && export PYENV_ROOT
 
+### Rust
+# https://www.rust-lang.org/
+[[ -d "$HOME/.rustup" ]] && export RUSTUP_HOME="$HOME/.rustup"
+[[ -d "$HOME/.cargo" ]] && export CARGO_HOME="$HOME/.cargo"
+[[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"
+
 ### Node.js nvm
 NVM_DIR="$HOME/.nvm"
 [[ -d "$NVM_DIR" ]] && export NVM_DIR
