@@ -21,7 +21,8 @@ alias nfs="cd $NFS_ROOT"
 alias hps="cd $HPS_ROOT"
 alias software="cd $SOFTWARE_ROOT"
 
-export ENSCODE="/hps/software/users/ensembl/repositories/$USER"
+# suggested ENSCODE path: /hps/software/users/ensembl/repositories/$USER
+export ENSCODE="$SOFTWARE_ROOT/enscode"
 
 
 if [[ -d "$HOME/EBI_config/bin" ]]; then
@@ -80,7 +81,8 @@ Z_ROOT_DIRECTORY="$SOFTWARE_ROOT/programs/z"
 [[ -d "$Z_ROOT_DIRECTORY" ]] && export Z_ROOT_DIRECTORY
 
 ### Python pyenv
-PYENV_ROOT="$SOFTWARE_ROOT/.pyenv"
+#PYENV_ROOT="$SOFTWARE_ROOT/.pyenv"
+PYENV_ROOT="$NFS_ROOT/.pyenv"
 [[ -d "$PYENV_ROOT" ]] && export PYENV_ROOT
 
 ### Rust
