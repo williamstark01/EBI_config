@@ -13,7 +13,7 @@ set -e
 
 yes_no_question() {
     while true; do
-        read -e -p "$1 (y/n): " YES_NO_ANSWER < /dev/tty
+        read -e -p -r "$1 (y/n): " YES_NO_ANSWER < /dev/tty
         case $YES_NO_ANSWER in
             y)
                 break
@@ -27,7 +27,7 @@ yes_no_question() {
         esac
     done
 
-    echo $YES_NO_ANSWER
+    echo "$YES_NO_ANSWER"
 }
 
 
@@ -112,10 +112,10 @@ setup_python_environment() {
     # /hps/software/users/ensembl/ensw/latest/envs/minimal.sh
     # /hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/envs/linuxbrew.sh
     ################################################################################
-    ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
+    #ENSEMBL_SOFTWARE_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge
 
-    HOMEBREW_ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
-    ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+    #HOMEBREW_ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+    #ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
 
     LINUXBREW_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/linuxbrew
     PATH="$LINUXBREW_HOME/bin:$LINUXBREW_HOME/sbin:$PATH"
@@ -125,8 +125,8 @@ setup_python_environment() {
 
     # install latest Python version
     PYTHON_LATEST_VERSION=$(pyenv latest --print)
-    CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install $PYTHON_LATEST_VERSION
-    pyenv global $PYTHON_LATEST_VERSION
+    CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install "$PYTHON_LATEST_VERSION"
+    pyenv global "$PYTHON_LATEST_VERSION"
 
     # upgrade global Python pip
     pip install --upgrade pip
@@ -228,7 +228,7 @@ main() {
         kill -INT $$
     fi
 
-    cd $HOME
+    cd "$HOME"
 
     # create $HOME directories
     mkdir --parents --verbose "$HOME/data"
@@ -264,11 +264,11 @@ main() {
     )
     for DOTFILE in "${DOTFILES[@]}"; do
         backup_datetime "$DOTFILE"
-        ln --symbolic --force --verbose $HOME/dotfiles/"$DOTFILE" $HOME/
+        ln --symbolic --force --verbose "$HOME/dotfiles/$DOTFILE" "$HOME/"
     done
 
     backup_datetime .bashrc_local
-    cp --interactive --verbose $HOME/dotfiles/.bashrc_local $HOME/
+    cp --interactive --verbose "$HOME/dotfiles/.bashrc_local" "$HOME/"
     ############################################################################
 
 
@@ -279,7 +279,7 @@ main() {
 
     git clone https://github.com/williamstark01/EBI_config.git
 
-    ln --symbolic --force --verbose $HOME/EBI_config/.bashrc_codon $HOME/
+    ln --symbolic --force --verbose "$HOME/EBI_config/.bashrc_codon" "$HOME/"
     ############################################################################
 
     YES_NO_ANSWER=$(yes_no_question "Install z?")
@@ -289,9 +289,9 @@ main() {
 
     # TODO
     # install programs
-    STANDARD_PACKAGES=(
-        python-argcomplete
-    )
+    #STANDARD_PACKAGES=(
+    #    python-argcomplete
+    #)
 
     YES_NO_ANSWER=$(yes_no_question "Set up tmux?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
