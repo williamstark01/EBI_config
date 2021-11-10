@@ -53,9 +53,11 @@ ENSEMBL_RELEASE="104"
 
 # MySQL commands
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
-#if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
-#    export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
-#fi
+load_mysql_commands() {
+    if [[ -d /nfs/software/ensembl/mysql-cmds/ensembl/bin ]]; then
+        export PATH="/nfs/software/ensembl/mysql-cmds/ensembl/bin:$PATH"
+    fi
+}
 ################################################################################
 
 
