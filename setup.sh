@@ -69,14 +69,15 @@ setup_tmux() {
     cd "$TMUX_DIR"
     curl -LO https://github.com/uesyn/tmux-appimage/releases/download/3.2a/tmux-x86_64.AppImage
     chmod u+x "$TMUX_DIR/tmux-x86_64.AppImage"
-    cd "$HOME"
 
-    ln --symbolic --force --verbose "$TMUX_DIR/tmux-x86_64.AppImage" "$HOME/bin/tmux"
+    #ln --symbolic --force --verbose "$TMUX_DIR/tmux-x86_64.AppImage" "$HOME/bin/tmux"
 
     # NOTE
-    # if original AppImage doesn't run, extract and symlink
-    #./tmux-x86_64.AppImage --appimage-extract
-    #ln --symbolic --force --verbose "$TMUX_DIR/squashfs-root/AppRun" "$HOME/bin/tmux"
+    # original AppImage doesn't run on Codon compute nodes, extract and symlink to AppRun script
+    "$TMUX_DIR/tmux-x86_64.AppImage" --appimage-extract
+    ln --symbolic --force --verbose "$TMUX_DIR/squashfs-root/AppRun" "$HOME/bin/tmux"
+
+    cd "$HOME"
 
     # tmux bash completion
     # https://github.com/imomaliev/tmux-bash-completion
