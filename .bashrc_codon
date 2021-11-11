@@ -59,6 +59,9 @@ load_mysql_commands() {
         export PATH="$mysql_commands_directory:$PATH"
     fi
 }
+
+# LSF settings
+export LSB_DEFAULTQUEUE="production"
 ################################################################################
 
 
