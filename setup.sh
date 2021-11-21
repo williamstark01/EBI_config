@@ -85,10 +85,11 @@ setup_tmux() {
 }
 
 
-setup_python_environment() {
+setup_python() {
     # https://www.python.org/
 
     # install pyenv
+    # Python version manager
     # https://github.com/pyenv/pyenv
     if [[ -n "$PYENV_ROOT" ]]; then
         backup_datetime "$PYENV_ROOT"
@@ -127,12 +128,15 @@ setup_python_environment() {
     # install latest Python version
     PYTHON_LATEST_VERSION=$(pyenv latest --print)
     CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install "$PYTHON_LATEST_VERSION"
+
+    # set global Python to latest
     pyenv global "$PYTHON_LATEST_VERSION"
 
     # upgrade global Python pip
     pip install --upgrade pip
 
     # install Poetry
+    # Python dependency manager
     # https://github.com/python-poetry/poetry
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
 
@@ -141,6 +145,7 @@ setup_python_environment() {
     #ln --symbolic --force --verbose $HOME/dotfiles/.config/flake8 $HOME/.config/
 
     # install pipx
+    # Install and Run Python Applications in Isolated Environments
     # https://github.com/pypa/pipx
     python3 -m pip install --user pipx
     python3 -m pipx ensurepath
@@ -148,6 +153,8 @@ setup_python_environment() {
     PIPX_BIN_DIR="$HOME/.local/bin"
     export PATH="$PIPX_BIN_DIR:$PATH"
 
+    # Black
+    # Python code formatter
     # https://github.com/psf/black
     pipx install black
 }
@@ -201,9 +208,24 @@ setup_rust() {
     # install Rust
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
+    # exa
+    # modern ls replacement
+    # https://github.com/ogham/exa
     cargo install exa
+
+    # fd
+    # find replacement (search for files)
+    # https://github.com/sharkdp/fd
     cargo install fd-find
+
+    # delta
+    # a syntax-highlighting pager for git and diff output
+    # https://github.com/dandavison/delta
     cargo install git-delta
+
+    # ripgrep
+    # recursively search file contents for a regex pattern
+    # https://github.com/BurntSushi/ripgrep
     cargo install ripgrep
 }
 
@@ -214,10 +236,11 @@ setup_nodejs() {
     # https://github.com/nvm-sh/nvm
     export NVM_DIR="$SOFTWARE_ROOT/.nvm"
     mkdir --parents --verbose "$NVM_DIR"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 
     [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 
+    # install latest LTS version
     nvm install --lts
 }
 
@@ -273,6 +296,13 @@ main() {
     ############################################################################
 
 
+    # disable less `s` key log feature
+    # (specify custom key bindings for less, described in `$HOME/.lesskey`)
+    # man lesskey
+    ln --symbolic --force --verbose "$HOME/dotfiles/.lesskey" "$HOME/"
+    lesskey
+
+
     # EBI_config setup
     # https://github.com/williamstark01/EBI_config
     ############################################################################
@@ -288,12 +318,6 @@ main() {
         install_z
     fi
 
-    # TODO
-    # install programs
-    #STANDARD_PACKAGES=(
-    #    python-argcomplete
-    #)
-
     YES_NO_ANSWER=$(yes_no_question "Set up tmux?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
         setup_tmux
@@ -301,7 +325,7 @@ main() {
 
     YES_NO_ANSWER=$(yes_no_question "Set up Python development environment?")
     if [[ $YES_NO_ANSWER = "y" ]]; then
-        setup_python_environment
+        setup_python
     fi
 
     YES_NO_ANSWER=$(yes_no_question "Set up Neovim (requires Python)?")
