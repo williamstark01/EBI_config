@@ -49,7 +49,7 @@ export HIVE_EMAIL="$USER@ebi.ac.uk"
 export GENEBUILDER_ID=50
 
 #ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
-export ENSEMBL_RELEASE="105"
+export ENSEMBL_RELEASE="107"
 
 # MySQL commands
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
