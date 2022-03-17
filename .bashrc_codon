@@ -31,7 +31,9 @@ fi
 
 
 # open a bsub interactive shell
-alias bsub-shell="bsub -q production -Is -tty $SHELL"
+alias bsub-4="bsub -q production -Is -tty -M 4096 $SHELL"
+alias bsub-16="bsub -q production -Is -tty -M 16384 $SHELL"
+alias bsub-datamover="bsub -q datamover -Is -tty -M 4096 $SHELL"
 
 
 # tmux bash completion
