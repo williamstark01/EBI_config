@@ -1,4 +1,0 @@
-#!/bin/bash
-
-
-"${NFS_ROOT}/more/carla-git/dbc_processlist" -g genebuild
