@@ -25,6 +25,11 @@ alias software="cd $SOFTWARE_ROOT"
 export ENSCODE="$SOFTWARE_ROOT/enscode"
 
 
+# Exodus
+# https://github.com/intoli/exodus
+export PATH="$PATH:$HOME/.exodus/bin"
+
+
 if [[ -d "$HOME/EBI_config/bin" ]]; then
     export PATH="$HOME/EBI_config/bin:$PATH"
 fi
@@ -51,7 +56,7 @@ export HIVE_EMAIL="$USER@ebi.ac.uk"
 export GENEBUILDER_ID=50
 
 #ensembl_version=$(mysql-ens-meta-prod-1 ensembl_metadata --skip-column-names --execute="SELECT ensembl_version FROM data_release WHERE is_current = 1;")
-export ENSEMBL_RELEASE="107"
+export ENSEMBL_RELEASE="106"
 
 # MySQL commands
 # https://www.ebi.ac.uk/seqdb/confluence/display/ENS/MySQL+commands
