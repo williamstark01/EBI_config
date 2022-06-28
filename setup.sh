@@ -104,9 +104,10 @@ setup_python() {
     INFOPATH="$LINUXBREW_HOME/share/info:$INFOPATH"
     ################################################################################
 
-    # install latest Python version
-    PYTHON_LATEST_VERSION=$(pyenv latest --print)
-    CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install "$PYTHON_LATEST_VERSION"
+    # install latest bugfix version of preferred Python minor version
+    PREFERRED_PYTHON_MINOR_VERSION="3.9"
+    LATEST_PREFERRED_PYTHON_VERSION=$(pyenv latest --print "$PREFERRED_PYTHON_MINOR_VERSION")
+    CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install "$LATEST_PREFERRED_PYTHON_VERSION"
 
     # set global Python to latest
     pyenv global "$PYTHON_LATEST_VERSION"
