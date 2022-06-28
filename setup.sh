@@ -11,6 +11,13 @@
 set -e
 
 
+TEAM_NAME=genebuild
+
+NFS_ROOT="/nfs/production/flicek/ensembl/$TEAM_NAME/$USER"
+HPS_ROOT="/hps/nobackup/flicek/ensembl/$TEAM_NAME/$USER"
+SOFTWARE_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER"
+
+
 backup_datetime() {
     # append the suffix .backup and current datetime to a directory or file name
 
@@ -238,12 +245,6 @@ main() {
     mkdir --parents --verbose "$HOME/data"
     mkdir --parents --verbose "$HOME/bin"
     mkdir --parents --verbose "$HOME/.config"
-
-    TEAM_NAME=genebuild
-
-    NFS_ROOT="/nfs/production/flicek/ensembl/$TEAM_NAME/$USER"
-    HPS_ROOT="/hps/nobackup/flicek/ensembl/$TEAM_NAME/$USER"
-    SOFTWARE_ROOT="/hps/software/users/ensembl/$TEAM_NAME/$USER"
 
     # create nfs, hps, and software user directories
     mkdir --parents --verbose "$NFS_ROOT"
