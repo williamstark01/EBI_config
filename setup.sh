@@ -11,26 +11,6 @@
 set -e
 
 
-yes_no_question() {
-    while true; do
-        read -e -p -r "$1 (y/n): " YES_NO_ANSWER < /dev/tty
-        case $YES_NO_ANSWER in
-            y)
-                break
-                ;;
-            n)
-                break
-                ;;
-            *)
-                echo "Please enter \"y\" for yes or \"n\" for no." >&2
-                ;;
-        esac
-    done
-
-    echo "$YES_NO_ANSWER"
-}
-
-
 backup_datetime() {
     # append the suffix .backup and current datetime to a directory or file name
 
@@ -312,35 +292,17 @@ main() {
     ln --symbolic --force --verbose "$HOME/EBI_config/.bashrc_codon" "$HOME/"
     ############################################################################
 
-    YES_NO_ANSWER=$(yes_no_question "Install z?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        install_z
-    fi
+    install_z
 
-    YES_NO_ANSWER=$(yes_no_question "Set up tmux?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        setup_tmux
-    fi
+    setup_tmux
 
-    YES_NO_ANSWER=$(yes_no_question "Set up Python development environment?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        setup_python
-    fi
+    setup_python
 
-    YES_NO_ANSWER=$(yes_no_question "Set up Neovim (requires Python)?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        setup_neovim
-    fi
+    setup_neovim
 
-    YES_NO_ANSWER=$(yes_no_question "Set up Rust and install packages?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        setup_rust
-    fi
+    setup_rust
 
-    YES_NO_ANSWER=$(yes_no_question "Set up Node.js?")
-    if [[ $YES_NO_ANSWER = "y" ]]; then
-        setup_nodejs
-    fi
+    setup_nodejs
 }
 
 
