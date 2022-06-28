@@ -61,20 +61,19 @@ install_z() {
 
 setup_tmux() {
     # install third-party tmux AppImage
-    # https://github.com/uesyn/tmux-appimage
-    # (fork of https://github.com/nelsonenzo/tmux-appimage )
+    # https://github.com/nelsonenzo/tmux-appimage
 
     TMUX_DIR="$SOFTWARE_ROOT/programs/tmux"
     mkdir --parents --verbose "$TMUX_DIR"
     cd "$TMUX_DIR"
-    curl -LO https://github.com/uesyn/tmux-appimage/releases/download/3.2a/tmux-x86_64.AppImage
-    chmod u+x "$TMUX_DIR/tmux-x86_64.AppImage"
+    curl -LO https://github.com/nelsonenzo/tmux-appimage/releases/download/3.2a/tmux.appimage
+    chmod u+x "$TMUX_DIR/tmux.appimage"
 
-    #ln --symbolic --force --verbose "$TMUX_DIR/tmux-x86_64.AppImage" "$HOME/bin/tmux"
+    #ln --symbolic --force --verbose "$TMUX_DIR/tmux.appimage" "$HOME/bin/tmux"
 
     # NOTE
     # original AppImage doesn't run on Codon compute nodes, extract and symlink to AppRun script
-    "$TMUX_DIR/tmux-x86_64.AppImage" --appimage-extract
+    "$TMUX_DIR/tmux.appimage" --appimage-extract
     ln --symbolic --force --verbose "$TMUX_DIR/squashfs-root/AppRun" "$HOME/bin/tmux"
 
     cd "$HOME"
@@ -236,7 +235,7 @@ setup_nodejs() {
     # https://github.com/nvm-sh/nvm
     export NVM_DIR="$SOFTWARE_ROOT/.nvm"
     mkdir --parents --verbose "$NVM_DIR"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
     [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh"
 
