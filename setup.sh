@@ -80,7 +80,7 @@ setup_python() {
     if [[ -n "$PYENV_ROOT" ]]; then
         backup_datetime "$PYENV_ROOT"
     else
-        PYENV_ROOT="$SOFTWARE_ROOT/.pyenv"
+        PYENV_ROOT="$NFS_ROOT/.pyenv"
         export PYENV_ROOT
     fi
     # https://github.com/pyenv/pyenv-installer
