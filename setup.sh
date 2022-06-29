@@ -232,6 +232,14 @@ setup_nodejs() {
 }
 
 
+setup_more() {
+    # direnv
+    # automatically load and unload environment variables when changing directory
+    # https://github.com/direnv/direnv
+    export bin_path="$HOME/bin"; curl -sfL https://direnv.net/install.sh | bash
+}
+
+
 main() {
     # verify running on the Codon cluster
     if [[ $LSF_ENVDIR != "/ebi/lsf/codon/conf" ]]; then
@@ -305,6 +313,8 @@ main() {
     setup_rust
 
     setup_nodejs
+
+    setup_more
 }
 
 
