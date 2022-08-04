@@ -38,9 +38,10 @@ fi
 
 
 # open a bsub interactive shell
-alias bsub-4="bsub -q production -Is -tty -M 4096 $SHELL"
 alias bsub-16="bsub -q production -Is -tty -M 16384 $SHELL"
+alias bsub-64="bsub -q production -Is -tty -M 65536 $SHELL"
 alias bsub-gpu='bsub -q gpu -gpu "num=1:gmem=32256:j_exclusive=yes" -R"select[mem>32768] rusage[mem=32768] span[hosts=1]" -Is -tty -M 32768 $SHELL'
+alias bsub-gpu-a100='bsub -q gpu-a100 -gpu "num=1:gmem=81000:j_exclusive=yes" -R"select[mem>65536] rusage[mem=65536] span[hosts=1]" -Is -tty -M 65536 $SHELL'
 alias bsub-datamover="bsub -q datamover -Is -tty -M 4096 $SHELL"
 
 
