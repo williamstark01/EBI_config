@@ -117,7 +117,7 @@ setup_python() {
     CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install "$LATEST_PREFERRED_PYTHON_VERSION"
 
     # set global Python to latest
-    pyenv global "$PYTHON_LATEST_VERSION"
+    pyenv global "$LATEST_PREFERRED_PYTHON_VERSION"
 
     # upgrade global Python pip
     pip install --upgrade pip
