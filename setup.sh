@@ -122,11 +122,6 @@ setup_python() {
     # upgrade global Python pip
     pip install --upgrade pip
 
-    # install Poetry
-    # Python dependency manager
-    # https://github.com/python-poetry/poetry
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python -
-
     # link $HOME/.pylintrc and .config/flake8
     #ln --symbolic --force --verbose $HOME/dotfiles/.pylintrc $HOME/
     #ln --symbolic --force --verbose $HOME/dotfiles/.config/flake8 $HOME/.config/
@@ -139,6 +134,11 @@ setup_python() {
 
     PIPX_BIN_DIR="$HOME/.local/bin"
     export PATH="$PIPX_BIN_DIR:$PATH"
+
+    # Poetry
+    # Python dependency manager
+    # https://github.com/python-poetry/poetry
+    pipx install poetry
 
     # Black
     # Python code formatter
