@@ -126,6 +126,10 @@ setup_python() {
     #ln --symbolic --force --verbose $HOME/dotfiles/.pylintrc $HOME/
     #ln --symbolic --force --verbose $HOME/dotfiles/.config/flake8 $HOME/.config/
 
+    # create symlinks to Genebuild's virtual environments
+    ln --symbolic --force --verbose /hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/pyenv/versions/3.5.1/envs/genebuild-mirna $PYENV_ROOT/versions/genebuild-mirna
+    ln --symbolic --force --verbose /hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/pyenv/versions/3.7.6/envs/genebuild $PYENV_ROOT/versions/genebuild
+
     # install pipx
     # Install and Run Python Applications in Isolated Environments
     # https://github.com/pypa/pipx
