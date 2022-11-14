@@ -303,7 +303,7 @@ main() {
 
     git clone https://github.com/williamstark01/EBI_config.git
 
-    ln --symbolic --force --verbose "$HOME/EBI_config/.bashrc_codon" "$HOME/"
+    ln --symbolic --force --verbose "$HOME/EBI_config/.bashrc_local" "$HOME/"
     ############################################################################
 
     install_z
