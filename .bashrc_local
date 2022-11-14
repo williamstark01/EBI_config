@@ -97,7 +97,8 @@ PYENV_ROOT="$NFS_ROOT/.pyenv"
 [[ -d "$CARGO_HOME/bin" ]] && export PATH="$CARGO_HOME/bin:$PATH"
 
 ### Go
-[[ -d "$SOFTWARE_ROOT/go" ]] && export GO_ROOT="$SOFTWARE_ROOT/go"
+GO_ROOT="$SOFTWARE_ROOT/go"
+[[ -d "$GO_ROOT" ]] && export GOROOT="$GO_ROOT/go" && export GOPATH="$GO_ROOT/software"
 
 ### Node.js nvm
 NVM_DIR="$SOFTWARE_ROOT/.nvm"

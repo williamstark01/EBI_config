@@ -221,6 +221,46 @@ setup_rust() {
 }
 
 
+setup_go() {
+    # Go programming language
+    # https://go.dev/
+
+    # https://go.dev/doc/install
+
+    export GO_ROOT="$SOFTWARE_ROOT/go"
+
+    export GOROOT="$GO_ROOT/go"
+    export GOPATH="$GO_ROOT/software"
+
+    GO_INSTALLER="go1.19.3.linux-amd64.tar.gz"
+    GO_INSTALLER_SOURCE="https://go.dev/dl/$GO_INSTALLER"
+
+    # create Go custom root directory
+    [[ ! -d "$GO_ROOT" ]] && mkdir --parents --verbose "$GO_ROOT"
+    # delete existing Go installation
+    [[ -d "$GOROOT" ]] && rm -rf "$GOROOT"
+    [[ ! -d "$SOFTWARE_ROOT/temp" ]] && mkdir --parents --verbose "$SOFTWARE_ROOT/temp"
+    cd "$SOFTWARE_ROOT/temp"
+    curl -LO "$GO_INSTALLER_SOURCE"
+    tar -C "$GO_ROOT" -xzf "$GO_INSTALLER"
+    rm "$GO_INSTALLER"
+
+    export PATH="$GOROOT/bin:$PATH"
+    export PATH="$GOPATH/bin:$PATH"
+
+    # massren
+    # rename files using a text editor
+    # https://github.com/laurent22/massren
+    go install github.com/laurent22/massren@latest
+    massren --config editor "vim"
+
+    # watch
+    # watch implementation that supports aliases and color
+    # https://github.com/antonmedv/watch
+    go install github.com/antonmedv/watch@latest
+}
+
+
 setup_nodejs() {
     # https://nodejs.org/
 
@@ -315,6 +355,8 @@ main() {
     setup_neovim
 
     setup_rust
+
+    setup_go
 
     setup_nodejs
 
