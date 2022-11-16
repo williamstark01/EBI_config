@@ -253,11 +253,6 @@ setup_go() {
     # https://github.com/laurent22/massren
     go install github.com/laurent22/massren@latest
     massren --config editor "vim"
-
-    # watch
-    # watch implementation that supports aliases and color
-    # https://github.com/antonmedv/watch
-    go install github.com/antonmedv/watch@latest
 }
 
 
