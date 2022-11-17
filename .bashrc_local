@@ -3,13 +3,6 @@
 # William Stark (william@ebi.ac.uk)
 
 
-# verify running in the Codon cluster
-if [[ "$LSF_ENVDIR" != "/ebi/lsf/codon/conf" ]]; then
-    echo "This configuration is meant to be used on the Codon cluster, exiting."
-    kill -INT $$
-fi
-
-
 TEAM_NAME=genebuild
 
 
