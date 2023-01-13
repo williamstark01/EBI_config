@@ -30,7 +30,7 @@ create_project() {
     echo
 
     echo "Initializing the project with Poetry..."
-    poetry init --no-interaction --name $project_name
+    poetry init --no-interaction --quiet --name $project_name
     echo
 
     echo "Creating a git repository and importing the project files..."
