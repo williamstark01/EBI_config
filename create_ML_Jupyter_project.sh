@@ -8,6 +8,9 @@
 set -e
 
 
+SCRIPT_DIRECTORY="$(dirname "$(readlink -f "$0")")"
+
+
 create_project() {
     if ! command -v pyenv &> /dev/null ; then
         echo "Couldn't run pyenv, check it is installed and properly configured."
@@ -22,6 +25,15 @@ create_project() {
     mkdir $project_name
     cd $project_name
 
+    echo "Creating a git repository for the project..."
+    git init
+    git checkout -b main
+
+    cp "$SCRIPT_DIRECTORY/.gitignore" .
+    git add .gitignore
+    git commit -m "add .gitignore"
+    echo
+
     echo "Creating a dedicated Python virtual environment for the project $project_name..."
     pyenv virtualenv "$project_name"
     pyenv local "$project_name"
@@ -29,15 +41,15 @@ create_project() {
     pip install --upgrade pip
     echo
 
+    git add .python-version
+    git commit -m "specify virtual environment"
+
     echo "Initializing the project with Poetry..."
     poetry init --no-interaction --quiet --name $project_name
     echo
 
-    echo "Creating a git repository and importing the project files..."
-    git init
-    git checkout -b main
-    git add .python-version pyproject.toml
-    git commit -m "specify virtual environment and create Python project"
+    git add pyproject.toml
+    git commit -m "create Python project"
     echo
 
     echo "The project has been created, using Python version $(pyenv global)"
