@@ -1,6 +1,3 @@
-# .gitignore
-
-
 # Vim swap files
 *.swp
 
@@ -10,18 +7,31 @@
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
 
-# virtual environment directories
-.venv
-
 # binary file formats
 *.pdf
-*.zip
 *.png
 *.mp4
 *.mkv
 *.jpg
 *.jpeg
 *.pickle
+*.docx
+*.webm
+*.sif
+
+# archive formats
+*.zip
+*.7z
+*.tgz
+*.gz
 
 # other file formats
 *.html
+*.csv
+*.ipynb
+
+# LaTeX
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
