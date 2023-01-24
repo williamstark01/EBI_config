@@ -37,7 +37,7 @@ create_project() {
     git init
     git checkout -b main
     git add .python-version pyproject.toml
-    git commit -m "import project files"
+    git commit -m "specify virtual environment and create Python project"
     echo
 
     echo "The project has been created, using Python version $(pyenv global)"
