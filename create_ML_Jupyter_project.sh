@@ -94,6 +94,12 @@ create_ML_Jupyter_project() {
     ############################################################################
 
 
+    # copy Fergal's experiments notebooks
+    ############################################################################
+    cp --interactive --preserve /nfs/production/flicek/ensembl/genebuild/shared/ML_notebooks/Fergal_experiments .
+    ############################################################################
+
+
     # create a tmux session and start the JupyterLab server
     ############################################################################
     TMUX_SESSION_NAME=$PROJECT_NAME
