@@ -96,7 +96,7 @@ create_ML_Jupyter_project() {
 
     # copy Fergal's experiments notebooks
     ############################################################################
-    cp --interactive --preserve /nfs/production/flicek/ensembl/genebuild/shared/ML_notebooks/Fergal_experiments .
+    cp --interactive --preserve --recursive /nfs/production/flicek/ensembl/genebuild/shared/ML_notebooks/Fergal_experiments .
     ############################################################################
 
 
