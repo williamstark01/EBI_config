@@ -112,6 +112,9 @@ create_ML_Jupyter_project() {
     PORT=54321
     JUPYTERLAB_BSUB_JOB="bsub -q production -M $MEM_LIMIT -Is -tty jupyter-lab --port=$PORT --no-browser --ip 0.0.0.0"
     tmux send-keys -t "${TMUX_SESSION_NAME}:jupyterlab" "$JUPYTERLAB_BSUB_JOB" ENTER
+
+    # connect to the tmux session
+    tmux attach-session -t $TMUX_SESSION_NAME
     ############################################################################
 }
 
