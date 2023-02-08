@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 
-# Create a virtual environment for a new Python project and initialize the project with Poetry.
+# Create a virtual environment for a new Machine Learning Python project, initialize
+# the project with Poetry, and install useful ML packages.
 
 
 # exit on any error
@@ -12,7 +13,7 @@ SCRIPT_DIRECTORY="$(dirname "$(readlink -f "$0")")"
 
 
 #create_Python_project() {
-#    # function identical to the hononumous one in the create_Python_project.sh script
+#    # function identical to the homonymous one in the create_Python_project.sh script
 #<...>
 #}
 #create_Python_project
@@ -54,21 +55,46 @@ create_ML_Jupyter_project() {
     ############################################################################
 
 
+    PYTHON_VERSION="3.10.9"
+
+
+    # best to install locally but not necessary
+    # # install Python 3.10.9 if it doesn't exist
+    # ############################################################################
+    # PYTHON_VERSION="3.10.9"
+
+    # # load cluster Homebrew (ex Linuxbrew)
+    # # /hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/envs/linuxbrew.sh
+    # ################################################################################
+    # export HOMEBREW_ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+    # export ENSEMBL_MOONSHINE_ARCHIVE=/hps/software/users/ensembl/ensw/ENSEMBL_MOONSHINE_ARCHIVE
+
+    # export LINUXBREW_HOME=/hps/software/users/ensembl/ensw/C8-MAR21-sandybridge/linuxbrew
+    # export PATH="$LINUXBREW_HOME/bin:$LINUXBREW_HOME/sbin:$PATH"
+    # export MANPATH="$LINUXBREW_HOME/share/man:$MANPATH"
+    # export INFOPATH="$LINUXBREW_HOME/share/info:$INFOPATH"
+    # ################################################################################
+
+    # if ! pyenv versions | grep --quiet "$PYTHON_VERSION"; then
+    #     CC=gcc-10 CPPFLAGS="-I$LINUXBREW_HOME/include -I/usr/include" LDFLAGS="-L$LINUXBREW_HOME/lib -L/usr/lib64" pyenv install "$PYTHON_VERSION"
+    # fi
+    # ############################################################################
+
+
     # clone ML project template virtual environment
     ############################################################################
     echo "Cloning ML project template virtual environment... (Takes a few minutes.)"
 
     PYENV_VERSIONS_DIRECTORY="$(pyenv root)/versions"
 
-    # # create directory structure for the new virtual environment
-    # VENV_PARENT_DIRECTORY="$PYENV_VERSIONS_DIRECTORY/3.10.9/envs"
-    # mkdir --parents --verbose "$VENV_PARENT_DIRECTORY"
+    # use if $PYTHON_VERSION is installed locally
+    #VENV_PARENT_DIRECTORY="$PYENV_VERSIONS_DIRECTORY/$PYTHON_VERSION/envs"
 
     #VENV_DIRECTORY="$VENV_PARENT_DIRECTORY/$PROJECT_NAME"
     VENV_DIRECTORY="$PYENV_VERSIONS_DIRECTORY/$PROJECT_NAME"
 
     GB_ML_PROJECT_TEMPLATE_VENV_DIRECTORY="/nfs/production/flicek/ensembl/genebuild/william/.pyenv/versions/3.10.9/envs/gb_ml_project_template"
-    cp --interactive --preserve --recursive "$GB_ML_PROJECT_TEMPLATE_VENV_DIRECTORY" "$VENV_DIRECTORY"
+    cp --interactive --recursive "$GB_ML_PROJECT_TEMPLATE_VENV_DIRECTORY" "$VENV_DIRECTORY"
     #ln --symbolic "$VENV_DIRECTORY" "$PYENV_VERSIONS_DIRECTORY"
 
     pyenv local "$PROJECT_NAME"
@@ -86,7 +112,7 @@ create_ML_Jupyter_project() {
 
     PYPROJECT_TOML_TEMPLATE="/nfs/production/flicek/ensembl/genebuild/william/ML_Jupyter/gb_ml_project_template/pyproject.toml"
 
-    cp --interactive --preserve "$PYPROJECT_TOML_TEMPLATE" .
+    cp --interactive "$PYPROJECT_TOML_TEMPLATE" .
 
     git add pyproject.toml
     git commit -m "import pyproject.toml project configuration file"
@@ -96,7 +122,7 @@ create_ML_Jupyter_project() {
 
     # copy Fergal's experiments notebooks
     ############################################################################
-    cp --interactive --preserve --recursive /nfs/production/flicek/ensembl/genebuild/shared/ML_notebooks/Fergal_experiments .
+    cp --interactive --recursive /nfs/production/flicek/ensembl/genebuild/shared/ML_notebooks/Fergal_experiments .
     ############################################################################
 
 
